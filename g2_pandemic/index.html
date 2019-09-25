@@ -1,1 +1,256 @@
-
+<!DOCTYPE html>
+<html>
+   <head>
+      <link rel="stylesheet" href="style.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+      <script src="./resources/js/action-button.js"></script>
+      <script src="./resources/js/create-player.js"></script>
+      <script src="./resources/js/build-city.js"></script>
+      <script src="./resources/js/game-stats.js"></script>
+      <script src="./resources/js/game-state.js"></script>
+      <script src="./resources/js/card-deck.js"></script>
+      <script src="./resources/js/research-generator.js"></script>
+      <script src="./resources/js/control-cards.js"></script>
+      <script src="./resources/js/terminal-display.js"></script>
+      <script src="./resources/js/main.js"></script>
+      <title>Pandemic</title>
+   </head>
+   <body>
+      <audio id="high">
+         <source src="./resources/audio/high.wav" type="audio/mpeg">
+      </audio>
+      <audio id="low">
+         <source src="./resources/audio/whoosh.wav" type="audio/mpeg">
+      </audio>
+      <audio id="success">
+         <source src="./resources/audio/win.wav" type="audio/mpeg">
+      </audio>
+      <audio id="loseGame">
+         <source src="./resources/audio/lose.wav" type="audio/mpeg">
+      </audio>
+      <audio id="cureFound">
+         <source src="./resources/audio/success.wav" type="audio/mpeg">
+      </audio>
+      <div class="mainGameContainer">
+         <div class="allPlayersContainer">
+            <div class="playerContainer player_1">
+               <div class="playerOneNameContainer"></div>
+               <div class="playerHandContainer">
+                  <div class="playerICContainer player_1" data-card="0" id="player1Card1"></div>
+                  <div class="playerICContainer player_1" data-card="1" id="player1Card2"></div>
+                  <div class="playerICContainer player_1" data-card="2" id="player1Card3"></div>
+               </div>
+            </div>
+            <div class="playerContainer noViz">
+               <div class="playerTwoNameContainer"></div>
+               <div class="playerHandContainer">
+                  <div class="playerICContainer" data-card="0" id="player2Card1"></div>
+                  <div class="playerICContainer" data-card="1" id="player2Card2"></div>
+                  <div class="playerICContainer" data-card="2" id="player2Card3"></div>
+               </div>
+            </div>
+            <div class="outbreak" id="outbreak"></div>
+            <div class="outbreakMessage" Id="outbreakMessage"></div>
+         </div>
+         <div class="mapContainer">
+            <div class="continentContainer" id="leftContinent">
+               <div class="cityContainer" id="FairBanks"></div>
+               <div class="cityContainer seattle" id="Seattle">
+                  <div class='city Sea'>
+                     <div class='cityTop'>
+                        <div class='playerOne noViz'></div>
+                        <div class='playerTwo'></div>
+                     </div>
+                     <div class='cityMiddle'>
+                        <div class='left'>
+                           <div class='Seattle infectBlock1'></div>
+                           <div class='Seattle infectBlock2'></div>
+                        </div>
+                        <div class='center researchSeattle noViz'></div>
+                        <div class='right'>
+                           <div class='Seattle infectBlock3'></div>
+                           <div class='Seattle infectBlock4 noViz'></div>
+                        </div>
+                     </div>
+                     <div class='cityBottom'>SEA</div>
+                  </div>
+               </div>
+               <div class="cityContainer atlanta" id="Atlanta">
+                  <div class='city Atl'>
+                     <div class='cityTop'>
+                        <div class='playerOne'></div>
+                        <div class='playerTwo'></div>
+                     </div>
+                     <div class='cityMiddle'>
+                        <div class='left'>
+                           <div class='Atlanta infectBlock1 noViz'></div>
+                           <div class='Atlanta infectBlock2 noViz'></div>
+                        </div>
+                        <div class='center researchAtlanta noViz'></div>
+                        <div class='right'>
+                           <div class='Atlanta infectBlock3 noViz'></div>
+                           <div class='Atlanta infectBlock4 noViz'></div>
+                        </div>
+                     </div>
+                     <div class='cityBottom'>ATL</div>
+                  </div>
+               </div>
+               <div class="cityContainer lima" id="Lima"></div>
+               <div class="cityContainer santiago" id="Santiago">
+                  <div class='city San'>
+                     <div class='cityTop'>
+                        <div class='playerOne noViz'></div>
+                        <div class='playerTwo'></div>
+                     </div>
+                     <div class='cityMiddle'>
+                        <div class='left'>
+                           <div class='Santiago infectBlock1'></div>
+                           <div class='Santiago infectBlock2'></div>
+                        </div>
+                        <div class='researchSantiago center noViz'></div>
+                        <div class='right'>
+                           <div class='Santiago infectBlock3 noViz'></div>
+                           <div class='Santiago infectBlock4 noViz'></div>
+                        </div>
+                     </div>
+                     <div class='cityBottom'>SAN</div>
+                  </div>
+               </div>
+            </div>
+            <div class="continentContainer" id="centerContinent">
+               <div class="cityContainer norway" id="Norway"></div>
+               <div class="cityContainer london" id="London">
+                  <div class='city Lon'>
+                     <div class='cityTop'>
+                        <div class='playerOne noViz'></div>
+                        <div class='playerTwo'></div>
+                     </div>
+                     <div class='cityMiddle'>
+                        <div class='left'>
+                           <div class='london infectBlock1 noViz'></div>
+                           <div class='london infectBlock2 noViz'></div>
+                        </div>
+                        <div class='researchLondon center noViz'></div>
+                        <div class='right'>
+                           <div class='london infectBlock3 noViz'></div>
+                           <div class='london infectBlock4 noViz'></div>
+                        </div>
+                     </div>
+                     <div class='cityBottom'>LON</div>
+                  </div>
+               </div>
+               <div class="cityContainer" id="Lagos"></div>
+               <div class="cityContainer saoPaulo" id="SaoPaulo">
+                  <div class='city Sao'>
+                     <div class='cityTop'>
+                        <div class='playerOne noViz'></div>
+                        <div class='playerTwo'></div>
+                     </div>
+                     <div class='cityMiddle'>
+                        <div class='left'>
+                           <div class='SaoPaulo infectBlock1 noViz'></div>
+                           <div class='SaoPaulo infectBlock2 noViz'></div>
+                        </div>
+                        <div class='researchSaoPaulo center noViz'></div>
+                        <div class='right'>
+                           <div class='SaoPaulo infectBlock3 noViz'></div>
+                           <div class='SaoPaulo infectBlock4 noViz'></div>
+                        </div>
+                     </div>
+                     <div class='cityBottom'>SAO</div>
+                  </div>
+               </div>
+               <div class="cityContainer johannesburg" id="Johannesburg">
+                  <div class='city Joh'>
+                     <div class='cityTop'>
+                        <div class='playerOne noViz'></div>
+                        <div class='playerTwo'></div>
+                     </div>
+                     <div class='cityMiddle'>
+                        <div class='left'>
+                           <div class='Johannesburg infectBlock1 noViz'></div>
+                           <div class='Johannesburg infectBlock2 noViz'></div>
+                        </div>
+                        <div class='researchJohannesburg noViz center'></div>
+                        <div class='right'>
+                           <div class='Johannesburg infectBlock3 noViz'></div>
+                           <div class='Johannesburg infectBlock4 noViz'></div>
+                        </div>
+                     </div>
+                     <div class='cityBottom'>JOH</div>
+                  </div>
+               </div>
+            </div>
+            <div class="continentContainer" id="rightContinent">
+               <div class="cityContainer" id="HoChiMinhCity"></div>
+               <div class="cityContainer sapporo" id="Sapporo">
+                  <div class='city Sap'>
+                     <div class='cityTop'>
+                        <div class='playerOne noViz'></div>
+                        <div class='playerTwo'></div>
+                     </div>
+                     <div class='cityMiddle'>
+                        <div class='left'>
+                           <div class='Sapporo infectBlock1'></div>
+                           <div class='Sapporo infectBlock2'></div>
+                        </div>
+                        <div class='researchSapporo center noViz'></div>
+                        <div class='right'>
+                           <div class='Sapporo infectBlock3 noViz'></div>
+                           <div class='Sapporo infectBlock4 noViz'></div>
+                        </div>
+                     </div>
+                     <div class='cityBottom'>SAP</div>
+                  </div>
+               </div>
+               <div class="cityContainer hongKong" id="HongKong">
+                  <div class='city Hon'>
+                     <div class='cityTop'>
+                        <div class='playerOne noViz'></div>
+                        <div class='playerTwo'></div>
+                     </div>
+                     <div class='cityMiddle'>
+                        <div class='left'>
+                           <div class='HongKong infectBlock1 noViz'></div>
+                           <div class='HongKong infectBlock2 noViz'></div>
+                        </div>
+                        <div class='researchHongKong center noViz'></div>
+                        <div class='right'>
+                           <div class='HongKong infectBlock3 noViz'></div>
+                           <div class='HongKong infectBlock4 noViz'></div>
+                        </div>
+                     </div>
+                     <div class='cityBottom'>HKG</div>
+                  </div>
+               </div>
+               <div class="cityContainer" id="Manila"></div>
+               <div class="cityContainer sydney" id="Sydney">
+                  <div class='city Syd'>
+                     <div class='cityTop'>
+                        <div class='playerOne noViz'></div>
+                        <div class='playerTwo'></div>
+                     </div>
+                     <div class='Sydyney cityMiddle'>
+                        <div class='left'>
+                           <div class='Sydney infectBlock1'></div>
+                           <div class='Sydney infectBlock2'></div>
+                        </div>
+                        <div class='researchSydney center noViz'></div>
+                        <div class='right'>
+                           <div class='Sydney infectBlock3 noViz'></div>
+                           <div class='Sydney infectBlock4 noViz'></div>
+                        </div>
+                     </div>
+                     <div class='cityBottom'>SYD</div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="bottomDisplayContainer">
+               <div class="treatDisease" id="treatDisease"></div>
+               <div class="panic"></div>
+               <div class="win noViz" id='win'></div>
+         </div>
+      </div>
+   </body>
+</html>
